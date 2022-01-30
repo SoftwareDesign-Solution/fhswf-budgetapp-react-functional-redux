@@ -29,12 +29,38 @@ export default class AddBudgetModal extends React.Component<AddBudgetModalProps,
         super(props);
 
         // Methoden registrieren
+        /*
         this.onModalClose = this.onModalClose.bind(this);
-        this.onNameChanged = this.onNameChanged.bind(this);
+        //this.onNameChanged = this.onNameChanged.bind(this);
         this.onAmountChanged = this.onAmountChanged.bind(this);
         this.onCancelClick = this.onCancelClick.bind(this);
         this.onSaveClick = this.onSaveClick.bind(this);
+        */
+
     }
+
+    onModalClose = () => {
+        this.props.onClose();
+    };
+
+    /*
+    onNameChanged(e: any) {
+        this.setState({name: e.target.value});
+    }
+    */
+
+    onNameChanged = (e: any) => this.setState({name: e.target.value});
+
+    onAmountChanged = (e: any) => this.setState({amount: e.target.value});
+
+    onCancelClick = () => {
+        this.props.onClose();
+    };
+
+    onSaveClick = () => {
+        this.props.onBudgetSave(this.state.name, this.state.amount);
+        this.props.onClose();
+    };
 
     render() {
 
@@ -59,6 +85,10 @@ export default class AddBudgetModal extends React.Component<AddBudgetModalProps,
                             <Form.Control type="number" onChange={this.onAmountChanged} />
                         </Form.Group>
 
+                        <div>
+                            {this.state.name}
+                        </div>
+
                     </Modal.Body>
 
                     <Modal.Footer>
@@ -70,27 +100,6 @@ export default class AddBudgetModal extends React.Component<AddBudgetModalProps,
 
             </form>
         );
-    }
-
-    onModalClose() {
-        this.props.onClose();
-    }
-
-    onNameChanged(e: any) {
-        this.setState({name: e.target.value});
-    }
-
-    onAmountChanged(e: any) {
-        this.setState({amount: e.target.value});
-    }
-
-    onCancelClick() {
-        this.props.onClose();
-    }
-
-    onSaveClick() {
-        this.props.onBudgetSave(this.state.name, this.state.amount);
-        this.props.onClose();
     }
 
 }

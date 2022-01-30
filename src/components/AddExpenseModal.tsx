@@ -36,18 +36,64 @@ export default class AddExpenseModal extends React.Component<AddExpenseModalProp
         super(props);
 
         // Methoden registrieren
+        /*
         this.onModalClose = this.onModalClose.bind(this);
         this.onNameChanged = this.onNameChanged.bind(this);
         this.onAmountChanged = this.onAmountChanged.bind(this);
         this.onBudgetChanged = this.onBudgetChanged.bind(this);
         this.onCancelClick = this.onCancelClick.bind(this);
         this.onSaveClick = this.onSaveClick.bind(this);
+        */
+
+    }
+
+    componentDidMount() {
+    }
+
+    componentDidUpdate(prevProps: Readonly<AddExpenseModalProps>, prevState: Readonly<AddExpenseModalState>, snapshot?: any) {
+    }
+
+    componentWillUnmount() {
+    }
+
+    onModalClose = () => {
+        this.props.onClose();
+    }
+
+    onNameChanged = (e: any) => this.setState({name: e.target.value});
+
+    onAmountChanged = (e: any) => this.setState({amount: e.target.value});
+
+    onBudgetChanged = (e: any) => this.setState({budgetId: e.target.value});
+
+    onCancelClick = () => {
+        this.props.onClose();
+    };
+
+    onSaveClick = () => {
+
+        let budgetId: string = '';
+
+        if (this.state.budgetId !== '')
+            budgetId = this.state.budgetId;
+        else if (this.props.budget?.id !== '')
+            budgetId = this.props.budget?.id || '';
+
+        const expense: Expense = {
+            id: uuidv4(),
+            budgetId: budgetId,
+            name: this.state.name,
+            amount: this.state.amount
+        };
+
+        this.props.onExpenseSave(expense);
+        this.props.onClose();
 
     }
 
     render() {
         return (
-            <Modal show={this.props.show}>
+            <Modal show={this.props.show} onHide={this.onModalClose}>
 
                 <Modal.Header closeButton>
                     <Modal.Title>Kosten hinzufügen</Modal.Title>
@@ -87,47 +133,6 @@ export default class AddExpenseModal extends React.Component<AddExpenseModalProp
 
             </Modal>
         );
-    }
-
-    onModalClose() {
-        this.props.onClose();
-    }
-
-    onNameChanged(e: any) {
-        this.setState({name: e.target.value});
-    }
-
-    onAmountChanged(e: any) {
-        this.setState({amount: e.target.value});
-    }
-
-    onBudgetChanged(e: any) {
-        this.setState({budgetId: e.target.value});
-    }
-
-    onCancelClick() {
-        this.props.onClose();
-    }
-
-    onSaveClick() {
-
-        let budgetId: string = '';
-
-        if (this.state.budgetId !== '')
-            budgetId = this.state.budgetId;
-        else if (this.props.budget?.id !== '')
-            budgetId = this.props.budget?.id || '';
-
-        const expense: Expense = {
-            id: uuidv4(),
-            budgetId: budgetId,
-            name: this.state.name,
-            amount: this.state.amount
-        };
-
-        this.props.onExpenseSave(expense);
-        this.props.onClose();
-
     }
 
 }

@@ -11,8 +11,11 @@ type TotalBudgetCardProps = {
 export default class TotalBudgetCard extends React.Component<TotalBudgetCardProps> {
 
     render() {
+
+        const { amount, max } = this.props;
+
         return (
-            <BudgetCard name="Gesamt" amount={this.props.amount} max={this.props.max} gray={true} hideButtons={true} />
+            <BudgetCard name="Gesamt" amount={amount} max={max} gray={true} hideButtons={true} />
         )
     }
 }

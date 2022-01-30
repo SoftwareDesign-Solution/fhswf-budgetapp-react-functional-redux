@@ -1,9 +1,8 @@
 import React from 'react';
-import {Button,Modal} from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import {Budget} from "../models/Budget";
 import ExpenseItem from "./ExpenseItem";
 import {Expense} from "../models/Expense";
-import exp from "constants";
 
 type ViewExpensesModalProps = {
 
@@ -24,25 +23,32 @@ export default class ViewExpensesModal extends React.Component<ViewExpensesModal
         super(props);
 
         // Methoden registrieren
-        this.onModalClose = this.onModalClose.bind(this);
+        //this.onModalClose = this.onModalClose.bind(this);
 
     }
 
+    onModalClose = () => {
+        this.props.onClose();
+    }
+
     render() {
+
+        const { budget, show } = this.props;
+
         return (
-            <Modal show={this.props.show} onHide={this.onModalClose}>
+            <Modal show={show} onHide={this.onModalClose}>
 
                 <Modal.Header closeButton>
-                    <Modal.Title>{this.props.budget != null ? this.props.budget.name : ''} - Kosten</Modal.Title>
+                    <Modal.Title>{budget != null ? budget.name : ''} - Kosten</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
 
-                    {this.props.budget != null && this.props.budget.expenses.map(item => {
+                    {budget != null && budget.expenses.map(item => {
                         return (
                             <ExpenseItem key={item.id}
                                          expense={item}
-                                         onExpenseDelete={this.props.onExpenseDelete}></ExpenseItem>
+                                         onExpenseDelete={this.props.onExpenseDelete} />
                         )
                     })}
 
@@ -78,10 +84,6 @@ export default class ViewExpensesModal extends React.Component<ViewExpensesModal
 
             </Modal>
         );
-    }
-
-    onModalClose() {
-        this.props.onClose();
     }
 
 }
