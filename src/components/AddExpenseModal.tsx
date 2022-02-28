@@ -1,9 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import {Button, Form, Modal} from "react-bootstrap";
 import {Budget} from "../models/Budget";
 import {Expense} from "../models/Expense";
 import { v4 as uuidv4 } from 'uuid';
+import {addExpense} from "../store/budget/budget.actions";
+import {hideAddExpenseModal} from "../store/modals/modals.actions";
 
+/*
 type AddExpenseModalProps = {
 
     // Parameter
@@ -16,6 +20,7 @@ type AddExpenseModalProps = {
     onExpenseSave: (expense: Expense) => void;
 
 }
+*/
 
 type AddExpenseModalState = {
     name: string;
@@ -23,7 +28,7 @@ type AddExpenseModalState = {
     budgetId: string;
 }
 
-export default class AddExpenseModal extends React.Component<AddExpenseModalProps, AddExpenseModalState> {
+class AddExpenseModal extends React.Component<any, AddExpenseModalState> {
 
     state: AddExpenseModalState = {
         name: '',
@@ -31,33 +36,8 @@ export default class AddExpenseModal extends React.Component<AddExpenseModalProp
         budgetId: ''
     };
 
-    constructor(props: any) {
-
-        super(props);
-
-        // Methoden registrieren
-        /*
-        this.onModalClose = this.onModalClose.bind(this);
-        this.onNameChanged = this.onNameChanged.bind(this);
-        this.onAmountChanged = this.onAmountChanged.bind(this);
-        this.onBudgetChanged = this.onBudgetChanged.bind(this);
-        this.onCancelClick = this.onCancelClick.bind(this);
-        this.onSaveClick = this.onSaveClick.bind(this);
-        */
-
-    }
-
-    componentDidMount() {
-    }
-
-    componentDidUpdate(prevProps: Readonly<AddExpenseModalProps>, prevState: Readonly<AddExpenseModalState>, snapshot?: any) {
-    }
-
-    componentWillUnmount() {
-    }
-
     onModalClose = () => {
-        this.props.onClose();
+        this.props.hideAddExpenseModal();
     }
 
     onNameChanged = (e: any) => this.setState({name: e.target.value});
@@ -67,7 +47,7 @@ export default class AddExpenseModal extends React.Component<AddExpenseModalProp
     onBudgetChanged = (e: any) => this.setState({budgetId: e.target.value});
 
     onCancelClick = () => {
-        this.props.onClose();
+        this.props.hideAddExpenseModal();
     };
 
     onSaveClick = () => {
@@ -86,14 +66,15 @@ export default class AddExpenseModal extends React.Component<AddExpenseModalProp
             amount: this.state.amount
         };
 
-        this.props.onExpenseSave(expense);
-        this.props.onClose();
+        this.props.addExpense(budgetId, expense);
+        this.props.hideAddExpenseModal();
 
     }
 
     render() {
+
         return (
-            <Modal show={this.props.show} onHide={this.onModalClose}>
+            <Modal show={this.props.addExpenseModal} onHide={this.onModalClose}>
 
                 <Modal.Header closeButton>
                     <Modal.Title>Kosten hinzufügen</Modal.Title>
@@ -115,7 +96,7 @@ export default class AddExpenseModal extends React.Component<AddExpenseModalProp
                         <Form.Group className="mb-3" controlId="input-3">
                             <Form.Text>Budget</Form.Text>
                             <Form.Select defaultValue={this.props.budget != null ? this.props.budget.id : ''} onChange={this.onBudgetChanged}>
-                                {this.props.budgets.map(item => {
+                                {this.props.budgets.map((item: Budget) => {
                                     return (
                                         <option key={item.id} value={item.id}>{item.name}</option>
                                     )
@@ -135,4 +116,21 @@ export default class AddExpenseModal extends React.Component<AddExpenseModalProp
         );
     }
 
-}
+};
+
+const mapStateToProps = (state: any) => {
+    return {
+        addExpenseModal: state.modals.addExpenseModal,
+        budget: state.budget.budget,
+        budgets: state.budget.budgets,
+    };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        addExpense: (budgetId: string, expense: Expense) => dispatch(addExpense(budgetId, expense)),
+        hideAddExpenseModal: () => dispatch(hideAddExpenseModal()),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddExpenseModal);

@@ -1,126 +1,57 @@
 import React from 'react';
-import './App.css';
+import { connect } from 'react-redux'
 import {Container, Button} from "react-bootstrap";
-import AddBudgetModal from "./components/AddBudgetModal";
 import BudgetCard from "./components/BudgetCard";
+import {Budget} from "./models/Budget";
+import {
+    showAddBudgetModal,
+    showAddExpenseModal,
+    showViewExpensesModal
+} from "./store/modals/modals.actions";
+import AddBudgetModal from "./components/AddBudgetModal";
+import AddExpenseModal from "./components/AddExpenseModal";
+import {setCurrentBudget} from "./store/budget/budget.actions";
 import ViewExpensesModal from "./components/ViewExpensesModal";
 import TotalBudgetCard from "./components/TotalBudgetCard";
-import AddExpenseModal from "./components/AddExpenseModal";
-import {Budget as BudgetModal} from "./models/Budget";
-import { v4 as uuidv4 } from 'uuid';
-import {Expense} from "./models/Expense";
 
-type AppState = {
-    budget?: BudgetModal;
-    budgets: BudgetModal[];
-    showAddBudgetModal: boolean;
-    showAddExpenseModal: boolean;
-    showViewExpensesModal: boolean;
-}
-
-export default class App extends React.Component<{}, AppState>{
-
-    state: AppState = {
-        budgets: [
-            {id: uuidv4(), name: 'Hello World 1!', amount: 25, max: 100, expenses: [{id: uuidv4(), name: 'Kosten 1.1', amount: 25, budgetId: ''}]},
-            {id: uuidv4(), name: 'Hello World 2!', amount: 50, max: 100, expenses: [{id: uuidv4(), name: 'Kosten 2.1', amount: 50, budgetId: ''}]},
-            {id: uuidv4(), name: 'Hello World 3!', amount: 0, max: 100, expenses: []}],
-        showAddBudgetModal: false,
-        showAddExpenseModal: false,
-        showViewExpensesModal: false
-    };
-
-    /*
-    constructor(props: any) {
-        super(props);
-
-        // Methoden registrieren
-        //this.onAddBudgetClick = this.onAddBudgetClick.bind(this);
-        //this.onBudgetSave = this.onBudgetSave.bind(this);
-        //this.onExpenseSave = this.onExpenseSave.bind(this);
-        //this.onExpenseDelete = this.onExpenseDelete.bind(this);
-
-    }
-    */
+class App extends React.Component<any, any> {
 
     onAddBudgetClick = () => {
-        this.setState({showAddBudgetModal: true})
+        this.props.showAddBudgetModal();
+
+        /*
+        const budget: Budget = { id: uuidv4(), name: 'Hello World 4!', amount: 0, max: 500, expenses: [] };
+
+        const expense: Expense = { id: uuidv4(), budgetId: budget.id, name: 'Redux', amount: 450 };
+
+        this.props.addBudget(budget);
+
+        this.props.addExpense(budget.id, expense);
+
+        console.log(this.props.budgets);
+        */
+
     };
 
-    onAddExpenseClick = (budget?: BudgetModal) => {
-        this.setState({
-            budget: budget,
-            showAddExpenseModal: true
-        })
+    onAddExpenseClick = (budget?: Budget) => {
+        this.props.setCurrentBudget(budget);
+        this.props.showAddExpenseModal();
     };
 
-    onBudgetSave = (name: string, amount: number) => {
-
-        const budget: BudgetModal = {
-            id: uuidv4(),
-            name: name,
-            max: amount,
-            amount: 0,
-            expenses: []
-        };
-
-        const budgets = this.state.budgets;
-
-        budgets.push(budget);
-
-        this.setState({budgets: budgets});
-
+    onViewExpense = (budget: Budget | null) => {
+        this.props.setCurrentBudget(budget);
+        this.props.showViewExpensesModal();
     }
 
-    onExpenseSave = (expense: Expense) => {
-
-        let budgets = this.state.budgets;
-
-        let index = budgets.findIndex(item => item.id === expense.budgetId);
-
-        budgets[index].expenses.push(expense);
-
-        let total: number = budgets[index].expenses.reduce((total, current) => (total + (+current.amount)), 0);
-
-        budgets[index].amount = total;
-
-        this.setState({budgets: budgets});
-
+    get TotalBudgetAmount(): number {
+        return this.props.budgets.reduce((total: number, item: Budget) => (total + (+item.amount)), 0);
     }
 
-    onViewExpense = (budget: BudgetModal | null) => {
-
-        if (budget == null) return;
-
-        this.setState({
-            budget: budget,
-            showViewExpensesModal: true
-        });
-
-    }
-
-    onExpenseDelete = (expense: Expense) => {
-
-        let budgets = this.state.budgets;
-
-        let index = budgets.findIndex(item => item.id === expense.budgetId);
-
-        const expenses = budgets[index].expenses.filter(item => item.id !== expense.id);
-
-        budgets[index].expenses = expenses;
-
-        let total: number = budgets[index].expenses.reduce((total, current) => (total + (+current.amount)), 0);
-
-        budgets[index].amount = total;
-
-        this.setState({budgets: budgets});
-
-        console.log(this.state.budgets);
-
+    get TotalBudgetMax(): number {
+        return this.props.budgets.reduce((total: number, item: Budget) => (total + (+item.max)), 0);
     }
 
     render() {
-
         return (
             <Container className={"my-4"}>
 
@@ -134,10 +65,7 @@ export default class App extends React.Component<{}, AppState>{
                     className="d-grid align-content-stretch gap-2 align-items-start"
                     style={{gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))"}}>
 
-                    <BudgetCard name="Hello World 4!" amount={100} max={100} onExpenseAdd={() => this.onAddExpenseClick()} onViewExpense={() => this.onViewExpense(null)}></BudgetCard>
-                    <BudgetCard name="Hello World 5!" amount={200} max={100} onExpenseAdd={() => this.onAddExpenseClick()} onViewExpense={() => this.onViewExpense(null)}></BudgetCard>
-
-                    {this.state.budgets.map(item => {
+                    {this.props.budgets.map((item: Budget) => {
                         return (
                             <BudgetCard
                                 key={item.id}
@@ -150,110 +78,38 @@ export default class App extends React.Component<{}, AppState>{
                     })}
 
                     <TotalBudgetCard
-                        amount={this.state.budgets.reduce((total, item) => (total + (+item.amount)), 0)}
-                        max={this.state.budgets.reduce((total, item) => (total + (+item.max)), 0)} />
+                        amount={this.TotalBudgetAmount}
+                        max={this.TotalBudgetMax} />
 
                 </div>
 
-                <AddBudgetModal
-                    show={this.state.showAddBudgetModal}
-                    onBudgetSave={this.onBudgetSave}
-                    onClose={() => this.setState({showAddBudgetModal: false})} />
+                <AddBudgetModal />
 
-                <AddExpenseModal
-                    show={this.state.showAddExpenseModal}
-                    budget={this.state.budget}
-                    budgets={this.state.budgets}
-                    onExpenseSave={this.onExpenseSave}
-                    onClose={() => this.setState({showAddExpenseModal: false})} />
+                <AddExpenseModal />
 
-                <ViewExpensesModal
-                    show={this.state.showViewExpensesModal}
-                    budget={this.state.budget}
-                    onClose={() => this.setState({showViewExpensesModal: false})}
-                    onExpenseDelete={this.onExpenseDelete} />
+                <ViewExpensesModal />
 
             </Container>
         );
-
     }
 
-  /*
-  onAddBudgetClick() {
-      this.setState({showAddBudgetModal: true});
-  }
-  */
+};
 
-  /*onAddExpenseClick(budget?: BudgetModal) {
-      this.setState({
-          budget: budget,
-          showAddExpenseModal: true
-      })
-  }*/
+const mapStateToProps = (state: any) => {
+    return {
+        budgets: state.budget.budgets
+    };
+};
 
-  /*onViewExpense(budget: BudgetModal | null) {
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        //addBudget: (budget: Budget) => dispatch(addBudget(budget)),
+        //addExpense: (budgetId: string, expense: Expense) => dispatch(addExpense(budgetId, expense)),
+        showAddBudgetModal: () => dispatch(showAddBudgetModal()),
+        showAddExpenseModal: () => dispatch(showAddExpenseModal()),
+        showViewExpensesModal: () => dispatch(showViewExpensesModal()),
+        setCurrentBudget: (budget: Budget) => dispatch(setCurrentBudget(budget)),
+    };
+};
 
-        if (budget == null) return;
-
-        this.setState({
-            budget: budget,
-            showViewExpensesModal: true
-        });
-
-  }*/
-
-    /*onBudgetSave(name: string, amount: number) {
-
-      const budget: BudgetModal = {
-          id: uuidv4(),
-          name: name,
-          max: amount,
-          amount: 0,
-          expenses: []
-        };
-
-        const budgets = this.state.budgets;
-
-        budgets.push(budget);
-
-        this.setState({budgets: budgets});
-
-    }*/
-
-    /*onExpenseSave(expense: Expense) {
-
-        let budgets = this.state.budgets;
-
-        let index = budgets.findIndex(item => item.id === expense.budgetId);
-
-        budgets[index].expenses.push(expense);
-
-        let total: number = budgets[index].expenses.reduce((total, current) => (total + (+current.amount)), 0);
-
-        budgets[index].amount = total;
-
-        this.setState({budgets: budgets});
-
-    }*/
-
-    /*onExpenseDelete(expense: Expense) {
-
-        let budgets = this.state.budgets;
-
-        let index = budgets.findIndex(item => item.id === expense.budgetId);
-
-        const expenses = budgets[index].expenses.filter(item => item.id !== expense.id);
-
-        budgets[index].expenses = expenses;
-
-        let total: number = budgets[index].expenses.reduce((total, current) => (total + (+current.amount)), 0);
-
-        budgets[index].amount = total;
-
-        this.setState({budgets: budgets});
-
-        console.log(this.state.budgets);
-
-    }*/
-
-}
+export default connect(mapStateToProps, mapDispatchToProps)(App);

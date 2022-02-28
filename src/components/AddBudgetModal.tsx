@@ -1,6 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import {Button, Form, Modal} from "react-bootstrap";
+import {Budget} from "../models/Budget";
+import {addBudget} from "../store/budget/budget.actions";
+import {hideAddBudgetModal} from "../store/modals/modals.actions";
+import {v4 as uuidv4} from "uuid";
 
+/*
 type AddBudgetModalProps = {
 
     // Parameter
@@ -11,55 +17,46 @@ type AddBudgetModalProps = {
     onBudgetSave: (name: string, amount: number) => void;
 
 }
+*/
 
 type AddBudgetModalState = {
     name: string;
     amount: number;
 }
 
-export default class AddBudgetModal extends React.Component<AddBudgetModalProps, AddBudgetModalState> {
+class AddBudgetModal extends React.Component<any, AddBudgetModalState> {
 
     state: AddBudgetModalState = {
         name: '',
         amount: 0
     };
 
-    constructor(props: AddBudgetModalProps) {
-
-        super(props);
-
-        // Methoden registrieren
-        /*
-        this.onModalClose = this.onModalClose.bind(this);
-        //this.onNameChanged = this.onNameChanged.bind(this);
-        this.onAmountChanged = this.onAmountChanged.bind(this);
-        this.onCancelClick = this.onCancelClick.bind(this);
-        this.onSaveClick = this.onSaveClick.bind(this);
-        */
-
-    }
-
     onModalClose = () => {
-        this.props.onClose();
+        this.props.hideAddBudgetModal();
     };
-
-    /*
-    onNameChanged(e: any) {
-        this.setState({name: e.target.value});
-    }
-    */
 
     onNameChanged = (e: any) => this.setState({name: e.target.value});
 
     onAmountChanged = (e: any) => this.setState({amount: e.target.value});
 
     onCancelClick = () => {
-        this.props.onClose();
+        this.props.hideAddBudgetModal();
     };
 
     onSaveClick = () => {
-        this.props.onBudgetSave(this.state.name, this.state.amount);
-        this.props.onClose();
+
+        const budget: Budget = {
+            id: uuidv4(),
+            name: this.state.name,
+            max: this.state.amount,
+            amount: 0,
+            expenses: []
+        };
+
+        this.props.addBudget(budget);
+
+        this.props.hideAddBudgetModal();
+
     };
 
     render() {
@@ -67,7 +64,7 @@ export default class AddBudgetModal extends React.Component<AddBudgetModalProps,
         return (
             <form>
 
-                <Modal show={this.props.show} onHide={this.onModalClose}>
+                <Modal show={this.props.addBudgetModal} onHide={this.onModalClose}>
 
                     <Modal.Header closeButton>
                         <Modal.Title>Budget hinzufügen</Modal.Title>
@@ -85,10 +82,6 @@ export default class AddBudgetModal extends React.Component<AddBudgetModalProps,
                             <Form.Control type="number" onChange={this.onAmountChanged} />
                         </Form.Group>
 
-                        <div>
-                            {this.state.name}
-                        </div>
-
                     </Modal.Body>
 
                     <Modal.Footer>
@@ -102,4 +95,19 @@ export default class AddBudgetModal extends React.Component<AddBudgetModalProps,
         );
     }
 
-}
+};
+
+const mapStateToProps = (state: any) => {
+    return {
+        addBudgetModal: state.modals.addBudgetModal,
+    };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        addBudget: (budget: Budget) => dispatch(addBudget(budget)),
+        hideAddBudgetModal: () => dispatch(hideAddBudgetModal()),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddBudgetModal);
