@@ -1,10 +1,11 @@
-import React from 'react';
-import { connect } from 'react-redux'
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import {Button, Form, Modal} from "react-bootstrap";
 import {Budget} from "../models/Budget";
 import {addBudget} from "../store/budget/budget.actions";
 import {hideAddBudgetModal} from "../store/modals/modals.actions";
 import {v4 as uuidv4} from "uuid";
+import State from './../store/State';
 
 /*
 type AddBudgetModalProps = {
@@ -19,84 +20,100 @@ type AddBudgetModalProps = {
 }
 */
 
+/*
 type AddBudgetModalState = {
     name: string;
     amount: number;
 }
+*/
 
-class AddBudgetModal extends React.Component<any, AddBudgetModalState> {
+const AddBudgetModal = () => {
 
-    state: AddBudgetModalState = {
+    const [state, setState] = useState({
         name: '',
         amount: 0
+    });
+
+    const dispatch = useDispatch();
+
+    const addBudgetModal = useSelector((state: State) => state.modals.addBudgetModal);
+
+    const onModalClose = () => {
+        dispatch(hideAddBudgetModal());
     };
 
-    onModalClose = () => {
-        this.props.hideAddBudgetModal();
+    const onNameChanged = (e: any) => setState(prevState => {
+        return {
+            ...prevState,
+            name: e.target.value
+        }
+    });
+
+    const onAmountChanged = (e: any) => setState(prevState => {
+        return {
+            ...prevState,
+            amount: e.target.value
+        }
+    });
+
+    const onCancelClick = () => {
+        dispatch(hideAddBudgetModal());
     };
 
-    onNameChanged = (e: any) => this.setState({name: e.target.value});
-
-    onAmountChanged = (e: any) => this.setState({amount: e.target.value});
-
-    onCancelClick = () => {
-        this.props.hideAddBudgetModal();
-    };
-
-    onSaveClick = () => {
+    const onSaveClick = () => {
 
         const budget: Budget = {
             id: uuidv4(),
-            name: this.state.name,
-            max: this.state.amount,
+            name: state.name,
+            max: state.amount,
             amount: 0,
             expenses: []
         };
 
-        this.props.addBudget(budget);
+        dispatch(addBudget(budget));
 
-        this.props.hideAddBudgetModal();
+        dispatch(hideAddBudgetModal());
 
     };
 
-    render() {
+    return (
+        <form>
 
-        return (
-            <form>
+            <Modal show={addBudgetModal} onHide={onModalClose}>
 
-                <Modal show={this.props.addBudgetModal} onHide={this.onModalClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Budget hinzufügen</Modal.Title>
+                </Modal.Header>
 
-                    <Modal.Header closeButton>
-                        <Modal.Title>Budget hinzufügen</Modal.Title>
-                    </Modal.Header>
+                <Modal.Body>
 
-                    <Modal.Body>
+                    <Form.Group className="mb-3" controlId="input-1">
+                        <Form.Text>Name</Form.Text>
+                        <Form.Control type="text" onChange={onNameChanged}/>
+                    </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="input-1">
-                            <Form.Text>Name</Form.Text>
-                            <Form.Control type="text" onChange={this.onNameChanged}/>
-                        </Form.Group>
+                    <Form.Group className="mb-3" controlId="input-1">
+                        <Form.Text>Betrag</Form.Text>
+                        <Form.Control type="number" onChange={onAmountChanged} />
+                    </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="input-1">
-                            <Form.Text>Betrag</Form.Text>
-                            <Form.Control type="number" onChange={this.onAmountChanged} />
-                        </Form.Group>
+                </Modal.Body>
 
-                    </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" type="submit" onClick={onCancelClick}>Abbrechen</Button>
+                    <Button variant="primary" type="submit" onClick={onSaveClick}>Speichern</Button>
+                </Modal.Footer>
 
-                    <Modal.Footer>
-                        <Button variant="secondary" type="submit" onClick={this.onCancelClick}>Abbrechen</Button>
-                        <Button variant="primary" type="submit" onClick={this.onSaveClick}>Speichern</Button>
-                    </Modal.Footer>
+            </Modal>
 
-                </Modal>
-
-            </form>
-        );
-    }
+        </form>
+    );
 
 };
 
+export default AddBudgetModal;
+
+/*
 const mapStateToProps = (state: any) => {
     return {
         addBudgetModal: state.modals.addBudgetModal,
@@ -111,3 +128,4 @@ const mapDispatchToProps = (dispatch: any) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddBudgetModal);
+*/

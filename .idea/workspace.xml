@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="420a68fe-cd6b-46ca-b575-f4becb7c44d1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/App2.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store/budget/budget.actions.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store/budget/budget.reducer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store/modals/modals.actions.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store/modals/modals.reducer.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/store/reducer.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/bootstrap-react.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/fhswf-budgetapp-react-redux.iml" afterDir="false" />
+    <list default="true" id="fe63fae8-8649-46ee-8f97-656d067144cc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/store/State.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/budget/budget.state.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/store/modals/modals.state.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/fhswf-budgetapp-react-redux.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/fhswf-budgetapp-react-functional-redux.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
@@ -23,8 +16,14 @@
       <change beforePath="$PROJECT_DIR$/src/components/AddExpenseModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AddExpenseModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/BudgetCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/BudgetCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/ExpenseItem.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ExpenseItem.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/TotalBudgetCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TotalBudgetCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/ViewExpensesModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ViewExpensesModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/budget/budget.actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/budget/budget.actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/budget/budget.reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/budget/budget.reducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/modals/modals.actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/modals/modals.actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/modals/modals.reducer.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/modals/modals.reducer.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/reducer.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +36,6 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
       </list>
     </option>
@@ -45,8 +43,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="25k3kjCRq3So4pMSTufmCYWX452" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="25sCU1nutJi80jSCh3Bf28XXKRT" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -54,11 +51,12 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="ts.external.directory.path" value="D:\Dropbox\xampp\htdocs\react\fhswf-budgetapp-react-redux\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="D:\Dropbox\xampp\htdocs\react\fhswf-budgetapp-react-functional-redux\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
@@ -76,12 +74,13 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="420a68fe-cd6b-46ca-b575-f4becb7c44d1" name="Changes" comment="" />
-      <created>1646057404685</created>
+      <changelist id="fe63fae8-8649-46ee-8f97-656d067144cc" name="Changes" comment="" />
+      <created>1646306426134</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1646057404685</updated>
-      <workItem from="1646057410738" duration="12565000" />
+      <updated>1646306426134</updated>
+      <workItem from="1646306432707" duration="7600000" />
+      <workItem from="1646316114199" duration="4456000" />
     </task>
     <servers />
   </component>

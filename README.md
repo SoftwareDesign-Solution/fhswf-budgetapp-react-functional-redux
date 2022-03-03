@@ -1,7 +1,15 @@
-# FHSWF React BudgetApp mit Redux
+# FHSWF React BudgetApp mit Functional Components & Redux
 
 Dieses Projekt wurde im Rahmen der Lehrbrief-Erstellung für das Modul "Webentwicklung Frontend" erstellt.
 
+## Verwendete Technologien
+- React 17.0.2
+- React Router 6.2.1
+- Redux 4.1.2
+- Bootstrap 5.1.3
+- TypeScript 4.5.5
+- Functional Components
+- React Hooks (useState, useDispatch, useSelector)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

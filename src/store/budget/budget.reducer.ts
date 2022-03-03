@@ -1,14 +1,9 @@
-import {Budget} from "../../models/Budget";
 import {Actions} from "./budget.actions";
+import { State } from './budget.state';
 import {v4 as uuidv4} from "uuid";
 
-type State = {
-    budget: Budget | null;
-    budgets: Budget[];
-}
-
 const initialState: State = {
-    budget: null,
+    budget: undefined,
     budgets: [
         {id: uuidv4(), name: 'Hello World 1!', amount: 25, max: 100, expenses: [{id: uuidv4(), name: 'Kosten 1.1', amount: 25, budgetId: ''}]},
         {id: uuidv4(), name: 'Hello World 2!', amount: 50, max: 100, expenses: [{id: uuidv4(), name: 'Kosten 2.1', amount: 50, budgetId: ''}]},
@@ -23,7 +18,10 @@ const reducer = (state = initialState, action: any) => {
         case Actions.ADD_BUDGET: {
             return {
                 ...state,
-                budgets: [...state.budgets, action.budget]
+                budgets: [
+                    ...state.budgets,
+                    action.budget
+                ]
             };
         }
 
@@ -39,7 +37,9 @@ const reducer = (state = initialState, action: any) => {
 
             return {
                 ...state,
-                budgets: [...state.budgets]
+                budgets: [
+                    ...state.budgets
+                ]
             }
 
         }
@@ -58,7 +58,9 @@ const reducer = (state = initialState, action: any) => {
 
             return {
                 ...state,
-                budgets: [...state.budgets]
+                budgets: [
+                    ...state.budgets
+                ]
             }
 
         }

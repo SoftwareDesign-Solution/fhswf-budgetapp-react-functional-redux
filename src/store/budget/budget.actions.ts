@@ -34,7 +34,7 @@ const deleteExpense = (budgetId: string, expenseId: string) => {
     }
 };
 
-const setCurrentBudget = (budget: Budget) => {
+const setCurrentBudget = (budget: Budget | undefined) => {
     return {
         type: Actions.SET_CURRENT_BUDGET,
         budget

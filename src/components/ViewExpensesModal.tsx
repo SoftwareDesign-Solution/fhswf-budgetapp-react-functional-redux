@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {Modal} from "react-bootstrap";
 import ExpenseItem from "./ExpenseItem";
 import {Expense} from "../models/Expense";
 import {deleteExpense} from "../store/budget/budget.actions";
 import {hideViewExpensesModal} from "../store/modals/modals.actions";
+import State from './../store/State';
 
 /*
 type ViewExpensesModalProps = {
@@ -20,36 +20,39 @@ type ViewExpensesModalProps = {
 }
 */
 
-class ViewExpensesModal extends React.Component<any> {
+const ViewExpensesModal = () => {
 
-    onModalClose = () => {
-        this.props.hideViewExpensesModal();
+    const dispatch = useDispatch();
+
+    const viewExpensesModal = useSelector((state: State) => state.modals.viewExpensesModal);
+    const budget = useSelector((state: State) => state.budget.budget);
+
+    const onModalClose = () => {
+        dispatch(hideViewExpensesModal());
     }
 
-    onExpenseDelete = (expense: Expense) => {
-        this.props.deleteExpense(expense.budgetId, expense.id);
+    const onExpenseDelete = (expense: Expense) => {
+        dispatch(deleteExpense(expense.budgetId, expense.id));
     };
 
-    render() {
+    return (
+        <Modal show={viewExpensesModal} onHide={onModalClose}>
 
-        return (
-            <Modal show={this.props.viewExpensesModal} onHide={this.onModalClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>{budget !== undefined ? budget.name : ''} - Kosten</Modal.Title>
+            </Modal.Header>
 
-                <Modal.Header closeButton>
-                    <Modal.Title>{this.props.budget != null ? this.props.budget.name : ''} - Kosten</Modal.Title>
-                </Modal.Header>
+            <Modal.Body>
 
-                <Modal.Body>
+                {budget !== undefined && budget.expenses.map((item: Expense) => {
+                    return (
+                        <ExpenseItem key={item.id}
+                                     expense={item}
+                                     onExpenseDelete={onExpenseDelete} />
+                    )
+                })}
 
-                    {this.props.budget != null && this.props.budget.expenses.map((item: Expense) => {
-                        return (
-                            <ExpenseItem key={item.id}
-                                         expense={item}
-                                         onExpenseDelete={this.onExpenseDelete} />
-                        )
-                    })}
-
-                    {/*
+                {/*
                     <div className="d-flex pb-3">
 
                         <div className="me-auto fs-4">Kosten 1.1</div>
@@ -61,14 +64,16 @@ class ViewExpensesModal extends React.Component<any> {
                     </div>
                     */}
 
-                </Modal.Body>
+            </Modal.Body>
 
-            </Modal>
-        );
-    }
+        </Modal>
+    );
 
 };
 
+export default ViewExpensesModal;
+
+/*
 const mapStateToProps = (state: any) => {
     return {
         budget: state.budget.budget,
@@ -84,3 +89,4 @@ const mapDispatchToProps = (dispatch: any) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewExpensesModal);
+*/

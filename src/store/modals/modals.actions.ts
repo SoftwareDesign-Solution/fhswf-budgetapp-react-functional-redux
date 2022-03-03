@@ -1,4 +1,4 @@
-const ModalsActions = {
+const Actions = {
     HIDE_ADDBUDGET: 'HIDE_ADDBUDGET',
     SHOW_ADDBUDGET: 'SHOW_ADDBUDGET',
     HIDE_ADDEXPENSE: 'HIDE_ADDEXPENSE',
@@ -9,38 +9,38 @@ const ModalsActions = {
 
 const hideAddBudgetModal = () => {
     return {
-        type: ModalsActions.HIDE_ADDBUDGET
+        type: Actions.HIDE_ADDBUDGET
     };
 };
 
 const showAddBudgetModal = () => {
     return {
-        type: ModalsActions.SHOW_ADDBUDGET
+        type: Actions.SHOW_ADDBUDGET
     };
 };
 
 const hideAddExpenseModal = () => {
     return {
-        type: ModalsActions.HIDE_ADDEXPENSE
+        type: Actions.HIDE_ADDEXPENSE
     };
 };
 
 const showAddExpenseModal = () => {
     return {
-        type: ModalsActions.SHOW_ADDEXPENSE
+        type: Actions.SHOW_ADDEXPENSE
     };
 };
 
 const hideViewExpensesModal = () => {
     return {
-        type: ModalsActions.HIDE_VIEWEXPENSES
+        type: Actions.HIDE_VIEWEXPENSES
     };
 };
 
 const showViewExpensesModal = () => {
     return {
-        type: ModalsActions.SHOW_VIEWEXPENSES
+        type: Actions.SHOW_VIEWEXPENSES
     };
 };
 
-export { ModalsActions, hideAddBudgetModal, showAddBudgetModal, hideAddExpenseModal, showAddExpenseModal, hideViewExpensesModal, showViewExpensesModal };
+export { Actions, hideAddBudgetModal, showAddBudgetModal, hideAddExpenseModal, showAddExpenseModal, hideViewExpensesModal, showViewExpensesModal };

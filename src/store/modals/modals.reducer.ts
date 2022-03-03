@@ -1,10 +1,5 @@
-import {ModalsActions} from "./modals.actions";
-
-type State = {
-    addBudgetModal: boolean,
-    addExpenseModal: boolean,
-    viewExpensesModal: boolean
-};
+import {Actions} from "./modals.actions";
+import { State } from './modals.state';
 
 const initialState: State = {
     addBudgetModal: false,
@@ -16,37 +11,37 @@ const reducer = (state = initialState, action: any) => {
 
     switch (action.type) {
 
-        case ModalsActions.HIDE_ADDBUDGET:
+        case Actions.HIDE_ADDBUDGET:
             return {
                 ...state,
                 addBudgetModal: false
             };
 
-        case ModalsActions.SHOW_ADDBUDGET:
+        case Actions.SHOW_ADDBUDGET:
             return {
                 ...state,
                 addBudgetModal: true
             };
 
-        case ModalsActions.HIDE_ADDEXPENSE:
+        case Actions.HIDE_ADDEXPENSE:
             return {
                 ...state,
                 addExpenseModal: false
             };
 
-        case ModalsActions.SHOW_ADDEXPENSE:
+        case Actions.SHOW_ADDEXPENSE:
             return {
                 ...state,
                 addExpenseModal: true
             };
 
-        case ModalsActions.HIDE_VIEWEXPENSES:
+        case Actions.HIDE_VIEWEXPENSES:
             return {
                 ...state,
                 viewExpensesModal: false
             };
 
-        case ModalsActions.SHOW_VIEWEXPENSES:
+        case Actions.SHOW_VIEWEXPENSES:
             return {
                 ...state,
                 viewExpensesModal: true

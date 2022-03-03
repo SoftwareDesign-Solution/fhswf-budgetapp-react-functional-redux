@@ -1,5 +1,4 @@
-import React from 'react';
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {Container, Button} from "react-bootstrap";
 import BudgetCard from "./components/BudgetCard";
 import {Budget} from "./models/Budget";
@@ -13,88 +12,81 @@ import AddExpenseModal from "./components/AddExpenseModal";
 import {setCurrentBudget} from "./store/budget/budget.actions";
 import ViewExpensesModal from "./components/ViewExpensesModal";
 import TotalBudgetCard from "./components/TotalBudgetCard";
+import State from './store/State';
 
-class App extends React.Component<any, any> {
+const App = () => {
 
-    onAddBudgetClick = () => {
-        this.props.showAddBudgetModal();
+    const dispatch = useDispatch();
 
-        /*
-        const budget: Budget = { id: uuidv4(), name: 'Hello World 4!', amount: 0, max: 500, expenses: [] };
+    const budgets = useSelector((state: State) => state.budget.budgets);
 
-        const expense: Expense = { id: uuidv4(), budgetId: budget.id, name: 'Redux', amount: 450 };
-
-        this.props.addBudget(budget);
-
-        this.props.addExpense(budget.id, expense);
-
-        console.log(this.props.budgets);
-        */
-
+    const onAddBudgetClick = () => {
+        dispatch(showAddBudgetModal());
     };
 
-    onAddExpenseClick = (budget?: Budget) => {
-        this.props.setCurrentBudget(budget);
-        this.props.showAddExpenseModal();
+    const onAddExpenseClick = (budget?: Budget) => {
+        dispatch(setCurrentBudget(budget));
+        dispatch(showAddExpenseModal());
     };
 
-    onViewExpense = (budget: Budget | null) => {
-        this.props.setCurrentBudget(budget);
-        this.props.showViewExpensesModal();
+    const onViewExpense = (budget?: Budget) => {
+        dispatch(setCurrentBudget(budget));
+        dispatch(showViewExpensesModal());
     }
 
-    get TotalBudgetAmount(): number {
-        return this.props.budgets.reduce((total: number, item: Budget) => (total + (+item.amount)), 0);
+    const TotalBudgetAmount = (): number => {
+        return budgets.reduce((total: number, item: Budget) => (total + (+item.amount)), 0);
     }
 
-    get TotalBudgetMax(): number {
-        return this.props.budgets.reduce((total: number, item: Budget) => (total + (+item.max)), 0);
+    const TotalBudgetMax = (): number => {
+        return budgets.reduce((total: number, item: Budget) => (total + (+item.max)), 0);
     }
 
-    render() {
-        return (
-            <Container className={"my-4"}>
+    return (
+        <Container className={"my-4"}>
 
-                <div className="d-flex mb-4 gap-2">
-                    <h1 className="me-auto">FHSWF React Kostenplaner</h1>
-                    <Button variant="primary" onClick={this.onAddBudgetClick}>Budget hinzufügen</Button>
-                    <Button variant="outline-primary" onClick={() => this.onAddExpenseClick()}>Kosten hinzufügen</Button>
-                </div>
+            <div className="d-flex mb-4 gap-2">
+                <h1 className="me-auto">FHSWF React Kostenplaner</h1>
+                <Button variant="primary" onClick={onAddBudgetClick}>Budget hinzufügen</Button>
+                <Button variant="outline-primary" onClick={() => onAddExpenseClick()}>Kosten hinzufügen</Button>
+            </div>
 
-                <div
-                    className="d-grid align-content-stretch gap-2 align-items-start"
-                    style={{gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))"}}>
+            <div
+                className="d-grid align-content-stretch gap-2 align-items-start"
+                style={{gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))"}}>
 
-                    {this.props.budgets.map((item: Budget) => {
-                        return (
-                            <BudgetCard
-                                key={item.id}
-                                name={item.name}
-                                amount={item.amount}
-                                max={item.max}
-                                onExpenseAdd={() => this.onAddExpenseClick(item)}
-                                onViewExpense={() => this.onViewExpense(item)} />
-                        )
-                    })}
+                {budgets.map((item: Budget) => {
+                    return (
+                        <BudgetCard
+                            key={item.id}
+                            name={item.name}
+                            amount={item.amount}
+                            max={item.max}
+                            onExpenseAdd={() => onAddExpenseClick(item)}
+                            onViewExpense={() => onViewExpense(item)} />
+                    )
+                })}
 
-                    <TotalBudgetCard
-                        amount={this.TotalBudgetAmount}
-                        max={this.TotalBudgetMax} />
+                <TotalBudgetCard
+                    amount={TotalBudgetAmount}
+                    max={TotalBudgetMax} />
 
-                </div>
+            </div>
 
-                <AddBudgetModal />
+            <AddBudgetModal />
 
-                <AddExpenseModal />
+            <AddExpenseModal />
 
-                <ViewExpensesModal />
+            <ViewExpensesModal />
 
-            </Container>
-        );
-    }
+        </Container>
+    );
 
 };
 
+export default App;
+
+/*
 const mapStateToProps = (state: any) => {
     return {
         budgets: state.budget.budgets
@@ -113,3 +105,4 @@ const mapDispatchToProps = (dispatch: any) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+*/

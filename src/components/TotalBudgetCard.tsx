@@ -1,21 +1,23 @@
-import React from 'react';
+//import React from 'react';
 import BudgetCard from "./BudgetCard";
 
+/*
 type TotalBudgetCardProps = {
 
     amount: number;
     max: number;
 
 }
+*/
 
-export default class TotalBudgetCard extends React.Component<TotalBudgetCardProps> {
+const TotalBudgetCard = (props: any) => {
 
-    render() {
+    const { amount, max } = props;
 
-        const { amount, max } = this.props;
+    return (
+        <BudgetCard name="Gesamt" amount={amount} max={max} gray={true} hideButtons={true} />
+    );
 
-        return (
-            <BudgetCard name="Gesamt" amount={amount} max={max} gray={true} hideButtons={true} />
-        )
-    }
-}
+};
+
+export default TotalBudgetCard;
